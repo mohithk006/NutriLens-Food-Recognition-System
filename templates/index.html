@@ -273,7 +273,7 @@
   <nav>
     <div class="logo-title">
       <a href="/">
-        <img src="/static/img/logo.png" alt="Logo" />
+         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" />
       </a>
       <a href="/"><strong>NutriLens</strong></a>
     </div>
@@ -286,7 +286,7 @@
 
   <!-- Hero Banner Section -->
 
-  <div class="hero">
+  <div class="hero" style="background: url('{{ url_for('static', filename='img/banner.png') }}') center/cover no-repeat;">
   <div class="hero-content">
     <h1>NutriLens - Your AI-powered Food & Nutrition Assistant</h1>
     <p>Detect. Analyze. Eat Smart.</p>
@@ -302,35 +302,35 @@
   <h2 id="what-we-offer" class="section-title">What We Offer</h2>
   <div class="card-grid">
     <div class="card">
-      <img src="/static/img/ai-recognition.jpg" alt="AI Food Recognition">
+       <img src="{{ url_for('static', filename='img/ai-recognition.jpg') }}" alt="AI Food Recognition">
       <div class="card-content">
         <h2>AI-based Food Recognition</h2>
         <p>Upload an image or text of your meal to get instant nutritional breakdown using AI models.</p>
       </div>
     </div>
     <div class="card">
-      <img src="/static/img/diet-plan.jpeg" alt="Diet Plan">
+       <img src="{{ url_for('static', filename='img/diet-plan.jpeg') }}" alt="Diet Plan">
       <div class="card-content">
         <h2>Personalized Diet Planning</h2>
         <p>Generate custom diet plans tailored to your preferences, health goals, and dietary restrictions.</p>
       </div>
     </div>
     <div class="card">
-      <img src="/static/img/recipe-gen.jpeg" alt="Meal Recommendation">
+      <img src="{{ url_for('static', filename='img/recipe-gen.jpeg') }}" alt="Meal Recommendation">
       <div class="card-content">
         <h2>Recipe Generation</h2>
         <p>Get the recipe of your favourite food by just providing the name of the dish.</p>
       </div>
     </div>
     <div class="card">
-      <img src="/static/img/shopping-list.png" alt="Shopping Cart">
+      <img src="{{ url_for('static', filename='img/shopping-list.png') }}" alt="Shopping Cart">
       <div class="card-content">
         <h2>Auto Shopping List</h2>
         <p>Convert your meal plans into a ready-to-use shopping list with just a click.</p>
       </div>
     </div>
     <div class="card">
-      <img src="/static/img/ingre-info.png" alt="Nutrition Info">
+      <img src="{{ url_for('static', filename='img/ingre-info.png') }}" alt="Nutrition Info">
       <div class="card-content">
         <h2>Ingredient Analysis</h2>
         <p>Become smart by knowing whether or not the food item is healthy based on the label behind the food item.</p>
@@ -339,46 +339,46 @@
   </div>
 
    <!-- Explore Section -->
-
-  <h2 id="explore-section" class="section-title">Explore</h2>
+    
+ <h2 id="explore-section" class="section-title">Explore</h2>
   <div class="explore-grid">
     <div class="card">
-      <img src="/static/img/nutrition.jpeg" alt="Nutrition Info">
+      <img src="{{ url_for('static', filename='img/nutrition.jpeg') }}" alt="Nutrition Info">
       <div class="card-content">
         <h4>Nutritional Content</h4>
         <button class="play-button" onclick="location.href='/nutritional.html'">➤</button>
       </div>
     </div>
     <div class="card" >
-      <img src="/static/img/mealplan.jpeg" alt="Meal Plan">
+      <img src="{{ url_for('static', filename='img/mealplan.jpeg') }}" alt="Meal Plan">
       <div class="card-content">
         <h4>Meal Plan</h4>
         <button class="play-button" onclick="location.href='/mealplan.html'">➤</button>
       </div>
     </div>
     <div class="card">
-      <img src="/static/img/recipe.png" alt="Recipe">
+      <img src="{{ url_for('static', filename='img/recipe.png') }}" alt="Recipe">
       <div class="card-content">
         <h4>Recipe</h4>
-        <button class="play-button" onclick="location.href='/recipe.html'">➤</button>
+<button class="play-button" onclick="location.href='/recipe.html'">➤</button>
       </div>
     </div>
     <div class="card">
-      <img src="/static/img/cart.jpeg" alt="Shopping Cart">
+      <img src="{{ url_for('static', filename='img/cart.jpeg') }}" alt="Shopping Cart">
       <div class="card-content">
         <h4>Shopping Cart</h4>
         <button class="play-button" onclick="location.href='/cart.html'">➤</button>
       </div>
     </div>
     <div class="card">
-      <img src="/static/img/ingredients.png" alt="Ingredients">
+      <img src="{{ url_for('static', filename='img/ingredients.png') }}" alt="Ingredients">
       <div class="card-content">
         <h4>Ingredients</h4>
         <button class="play-button" onclick="location.href='/ingredients.html'">➤</button>
       </div>
     </div>
     <div class="card">
-      <img src="/static/img/comingsoon.jpg" alt="Coming Soon">
+      <img src="{{ url_for('static', filename='img/comingsoon.jpg') }}" alt="Coming Soon">
       <div class="card-content">
         <h4>Coming Soon . . .</h4>
         <button class="play-button" onclick="location.href='/comingsoon.html'">➤</button>
@@ -405,3 +405,4 @@
   </footer>
 </body>
 </html>
+
