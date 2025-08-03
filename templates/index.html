@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NutriLens - AI Powered Food Intelligence</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 5px; 
+      margin-left: 0;
+    }
+    .logo-title img {
+      height: 40px;
+      margin-left: 0;
+      padding-left: 0;
+    }
+    .logo-title a {
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+      font-size: 1.5rem; 
+      line-height: 1;   
+    }
+    nav .logo-title a:hover {
+      color: green;
+    }
+    nav a {
+      margin-left: 1.2rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    .sign-in-btn {
+      background-color: #555;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 1.2rem;
+    }
+    .sign-in-btn1 {
+      margin-left: 0;
+    }
+    .sign-in-btn:hover {
+      background-color: green;
+    }
+    .hero {
+      background: url('/static/img/banner.png') center/cover no-repeat;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      padding-left: 3rem;
+      color: #222;
+      text-shadow: none;
+      position: relative;
+    }
+    .hero-content {
+      max-width: 600px;
+      padding: 1rem;
+      border-radius: 12px;
+      background-color: transparent;
+    }
+    .hero-content h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: #111;
+    }
+    .hero-content p {
+      font-size: 1.2rem;
+      color: #222;
+    }
+    .hero-buttons {
+      margin-top: 1.5rem;
+      margin-left: 0;
+    }
+    .hero-buttons .btn {
+      border: 2px solid white;
+      background-color: transparent;
+      color: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 24px;
+      margin-right: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .hero-buttons .btn:hover {
+      background-color: white;
+      color: #333;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin: 3rem 0 1.5rem;
+      color: #333;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      padding: 0 2rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      justify-content: center;
+    }
+    .card-grid > .card:nth-child(n+4) {
+      grid-column: span 1;
+      justify-self: center;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      height: 380px;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-content h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #111;
+    }
+    .card-content p {
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+      color: #555;
+    }
+
+    .explore-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 0 2rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .explore-grid .card {
+      height: 280px;
+      position: relative;
+    }
+    .explore-grid .card img {
+      height: 200px;
+    }
+    .explore-grid .card-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      gap: 1rem;
+      background-color: #fff;
+    }
+    .explore-grid .card-content h2 {
+      margin: 0;
+      font-size: 1rem;
+      color: #111;
+      flex: 1;
+      text-align: left;
+    }
+    .play-button {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+    }
+    .play-button:hover {
+      background-color: green;
+    }
+
+    .about-section {
+      background-color: #e9ecef;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .about-section p {
+      max-width: 700px;
+      margin: 1rem auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    .btn-about {
+      margin-top: 1rem;
+      padding: 0.8rem 1.6rem;
+      font-size: 1rem;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-about:hover {
+      background-color: green;
+    }
+    footer {
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.9rem;
+    }
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      border-radius: 24px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      display: none;
+      transition: background-color 0.3s;
+    }
+    .scroll-top-btn:hover {
+      background-color: white;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+
+  <nav>
+    <div class="logo-title">
+      <a href="/">
+        <img src="/static/img/logo.png" alt="Logo" />
+      </a>
+      <a href="/"><strong>NutriLens</strong></a>
+    </div>
+    <div>
+      <a href="/">About</a>
+      <a href="/">Login</a>
+      <button class="sign-in-btn" onclick="location.href='/'">Sign In</button>
+    </div>
+  </nav>
+
+  <!-- Hero Banner Section -->
+
+  <div class="hero">
+  <div class="hero-content">
+    <h1>NutriLens - Your AI-powered Food & Nutrition Assistant</h1>
+    <p>Detect. Analyze. Eat Smart.</p>
+    <div class="hero-buttons">
+      <button class="sign-in-btn1 sign-in-btn" onclick="location.href='#what-we-offer'">What is NutriLens</button>
+      <button class="sign-in-btn" onclick="location.href='#explore-section'">Try Now</button>
+    </div>
+  </div>
+</div>
+  
+  <!-- What We Offer Section -->
+
+  <h2 id="what-we-offer" class="section-title">What We Offer</h2>
+  <div class="card-grid">
+    <div class="card">
+      <img src="/static/img/ai-recognition.jpg" alt="AI Food Recognition">
+      <div class="card-content">
+        <h2>AI-based Food Recognition</h2>
+        <p>Upload an image or text of your meal to get instant nutritional breakdown using AI models.</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="/static/img/diet-plan.jpeg" alt="Diet Plan">
+      <div class="card-content">
+        <h2>Personalized Diet Planning</h2>
+        <p>Generate custom diet plans tailored to your preferences, health goals, and dietary restrictions.</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="/static/img/recipe-gen.jpeg" alt="Meal Recommendation">
+      <div class="card-content">
+        <h2>Recipe Generation</h2>
+        <p>Get the recipe of your favourite food by just providing the name of the dish.</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="/static/img/shopping-list.png" alt="Shopping Cart">
+      <div class="card-content">
+        <h2>Auto Shopping List</h2>
+        <p>Convert your meal plans into a ready-to-use shopping list with just a click.</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="/static/img/ingre-info.png" alt="Nutrition Info">
+      <div class="card-content">
+        <h2>Ingredient Analysis</h2>
+        <p>Become smart by knowing whether or not the food item is healthy based on the label behind the food item.</p>
+      </div>
+    </div>
+  </div>
+
+   <!-- Explore Section -->
+
+  <h2 id="explore-section" class="section-title">Explore</h2>
+  <div class="explore-grid">
+    <div class="card">
+      <img src="/static/img/nutrition.jpeg" alt="Nutrition Info">
+      <div class="card-content">
+        <h4>Nutritional Content</h4>
+        <button class="play-button" onclick="location.href='/nutritional.html'">➤</button>
+      </div>
+    </div>
+    <div class="card" >
+      <img src="/static/img/mealplan.jpeg" alt="Meal Plan">
+      <div class="card-content">
+        <h4>Meal Plan</h4>
+        <button class="play-button" onclick="location.href='/mealplan.html'">➤</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="/static/img/recipe.png" alt="Recipe">
+      <div class="card-content">
+        <h4>Recipe</h4>
+        <button class="play-button" onclick="location.href='/recipe.html'">➤</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="/static/img/cart.jpeg" alt="Shopping Cart">
+      <div class="card-content">
+        <h4>Shopping Cart</h4>
+        <button class="play-button" onclick="location.href='/cart.html'">➤</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="/static/img/ingredients.png" alt="Ingredients">
+      <div class="card-content">
+        <h4>Ingredients</h4>
+        <button class="play-button" onclick="location.href='/ingredients.html'">➤</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="/static/img/comingsoon.jpg" alt="Coming Soon">
+      <div class="card-content">
+        <h4>Coming Soon . . .</h4>
+        <button class="play-button" onclick="location.href='/comingsoon.html'">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+
+  <div class="about-section">
+    <h2>About Us</h2>
+    <p>
+      NutriLens is an AI-driven health platform that combines food recognition, nutrition, and personal wellness. 
+      We aim to empower people with informed dietary choices through smart automation and user-friendly tools.
+    </p>
+    <br />
+    <a class="btn-about" href="/">Read More</a>
+  </div>
+
+  <!-- Footer -->
+
+  <footer>
+    Made with ❤️ by Team NutriLens
+  </footer>
+</body>
+</html>

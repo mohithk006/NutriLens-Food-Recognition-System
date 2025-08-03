@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NutriLens - Nutritional Content</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <nav>
+    <div class="logo-title">
+      <a href="/"><img src="/static/img/logo.png" alt="Logo" /></a>
+      <a href="/"><strong>NutriLens</strong></a>
+    </div>
+    <div>
+      <a href="/">About</a>
+      <a href="/">Login</a>
+      <button class="sign-in-btn" onclick="location.href='/'">Sign In</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Discover the Power of Nutrition</h1>
+      <p>Upload the Image or Text and get the Essential Nutritional Information of the Food Item</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">🔬 Nutritional Content</h2>
+
+  <div class="card">
+    <h5 class="card-title">Upload Food Image</h5>
+    <input type="file" id="imageInput" accept="image/*" />
+    <select id="portionSize">
+      <option value="small serving (50 - 150 g)">Small serving (50 - 150 g)</option>
+      <option value="medium serving (150 - 300 g)" selected>Medium serving (150 - 300 g)</option>
+      <option value="large serving (300 - 500 g)">Large serving (300 - 500 g)</option>
+    </select>
+    <button class="btn-primary" onclick="uploadImage()">Detect & Get Info</button>
+  </div>
+
+  <div class="card">
+    <h5 class="card-title">Enter Food Name</h5>
+    <input type="text" id="manualFood" placeholder="E.g., Apple, Rice, Chicken" />
+    <select id="manualPortion">
+      <option value="small serving (50 - 150 g)">Small serving (50 - 150 g)</option>
+      <option value="medium serving (150 - 300 g)" selected>Medium serving (150 - 300 g)</option>
+      <option value="large serving (300 - 500 g)">Large serving (300 - 500 g)</option>
+    </select>
+    <button class="btn-primary" onclick="getManualNutrition()">Get Info</button>
+  </div>
+
+  <div id="nutritionResult" class="nutrition-box"></div>
+
+  <div class="about-section">
+    <h2>About Us</h2>
+    <p>
+      NutriLens is an AI-driven health platform that combines food recognition, nutrition, and personal wellness.
+      We aim to empower people with informed dietary choices through smart automation and user-friendly tools.
+    </p>
+    <br />
+    <a class="btn-about" href="/">Read More</a>
+  </div>
+
+  <footer>
+    Made with ❤️ by Team NutriLens
+  </footer>
+
+  <script>
+    function parseNutritionString(nutritionText) {
+      const lines = nutritionText.split('\n');
+      const result = {
+        foodItem: '',
+        portionSize: '',
+        nutrients: {},
+        benefits: [],
+        disadvantages: [],
+        alternatives: [],
+        verdict: '',
+        trivia: ''
+      };
+
+      let currentSection = '';
+
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+
+        if (line.startsWith('Food Item:')) {
+          result.foodItem = line.replace('Food Item:', '').trim();
+        } else if (line.startsWith('Portion size:')) {
+          result.portionSize = line.replace('Portion size:', '').trim();
+        } else if (line.includes(':') && !line.startsWith('1.') && !line.startsWith('2.') && 
+                   !line.startsWith('Nutritional benefits') && !line.startsWith('Disadvantages') && 
+                   !line.startsWith('Better alternatives') && !line.startsWith('Verdict') && 
+                   !line.startsWith('Trivia')) {
+          const [key, value] = line.split(':');
+          if (key && value) {
+            result.nutrients[key.trim()] = value.trim();
+          }
+        } else if (line.startsWith('Nutritional benefits')) {
+          currentSection = 'benefits';
+        } else if (line.startsWith('Disadvantages')) {
+          currentSection = 'disadvantages';
+        } else if (line.startsWith('Better alternatives')) {
+          currentSection = 'alternatives';
+        } else if (line.startsWith('Verdict:')) {
+          result.verdict = line.replace('Verdict:', '').trim();
+          currentSection = '';
+        } else if (line.startsWith('Trivia:')) {
+          result.trivia = line.replace('Trivia:', '').trim();
+          currentSection = '';
+        } else if (line.match(/^\d+\./)) {
+          const item = line.replace(/^\d+\.\s*/, '');
+          if (currentSection === 'benefits') {
+            result.benefits.push(item);
+          } else if (currentSection === 'disadvantages') {
+            result.disadvantages.push(item);
+          } else if (currentSection === 'alternatives') {
+            result.alternatives.push(item);
+          }
+        }
+      }
+
+      return result;
+    }
+
+    function shouldShowHealthWarnings(healthWarnings) {
+      if (!healthWarnings || healthWarnings.trim() === '') return false;
+      
+      // Check for common "no warnings" responses
+      const noWarningPhrases = [
+        'no major health concerns',
+        'no major concerns',
+        'healthy food choice',
+        'no warnings',
+        'no significant concerns',
+        'safe to consume',
+        'nutritious choice'
+      ];
+      
+      const warningsLower = healthWarnings.toLowerCase();
+      return !noWarningPhrases.some(phrase => warningsLower.includes(phrase));
+    }
+
+    function displaySingleFoodData(nutritionText, healthWarnings = '', detectedFood = '', portion = '', index = 0) {
+      const data = parseNutritionString(nutritionText);
+      
+      let html = '';
+      
+      // Food item and portion
+      const foodName = data.foodItem || detectedFood;
+      const portionSize = data.portionSize || portion;
+      
+      if (foodName) {
+        html += `<div class="food-heading"><strong>🍽️ ${foodName}</strong></div>`;
+      }
+      if (portionSize) {
+        html += `<div class="portion-heading"><strong>🥣 Portion size: ${portionSize.charAt(0).toUpperCase() + portionSize.slice(1)}</strong></div>`;
+      }
+
+      // Nutritional values with dark golden yellow values
+      for (const [key, value] of Object.entries(data.nutrients)) {
+        html += `<div class="nutrient-row">
+          <span class="nutrient-label"><strong>${key}:</strong></span>
+          <span class="nutrient-value"><strong>${value}</strong></span>
+        </div>`;
+      }
+
+      // Health warnings section - improved logic
+      if (healthWarnings && shouldShowHealthWarnings(healthWarnings)) {
+        html += `<div class="health-warnings">
+          <div class="warning-title">⚠️ Health Alerts:</div>
+          <div>${healthWarnings.replace(/\n/g, '<br>')}</div>
+        </div>`;
+      }
+
+      // Benefits
+      if (data.benefits.length > 0) {
+        html += `<div class="section-heading benefits-section"><strong>✨ Nutritional Benefits:</strong></div>`;
+        data.benefits.forEach(benefit => {
+          html += `<div class="list-item">• ${benefit}</div>`;
+        });
+      }
+
+      // Disadvantages
+      if (data.disadvantages.length > 0) {
+        html += `<div class="section-heading disadvantages-section"><strong>⚠️ Disadvantages:</strong></div>`;
+        data.disadvantages.forEach(disadvantage => {
+          html += `<div class="list-item">• ${disadvantage}</div>`;
+        });
+      }
+
+      // Verdict
+      if (data.verdict) {
+        html += `<div class="verdict-section"><strong>🎯 Verdict:</strong> ${data.verdict}</div>`;
+      }
+
+      // Button container for alternatives and trivia
+      if (data.alternatives.length > 0 || data.trivia) {
+        html += `<div class="button-container">`;
+        
+        if (data.alternatives.length > 0) {
+          html += `<button class="btn-secondary" onclick="toggleAlternatives(${index})">🔄 Better Alternatives</button>`;
+        }
+        
+        if (data.trivia) {
+          html += `<button class="btn-secondary" onclick="toggleTrivia(${index})">💡 Fun Trivia</button>`;
+        }
+        
+        html += `</div>`;
+      }
+
+      // Hidden sections for alternatives and trivia
+      if (data.alternatives.length > 0) {
+        html += `<div id="alternativesSection${index}" class="hidden">
+          <div class="section-heading alternatives-section"><strong>🔄 Better Alternatives:</strong></div>`;
+        data.alternatives.forEach(alternative => {
+          html += `<div class="list-item">• ${alternative}</div>`;
+        });
+        html += `</div>`;
+      }
+
+      if (data.trivia) {
+        html += `<div id="triviaSection${index}" class="hidden">
+          <div class="trivia-section"><strong>💡 Fun Trivia:</strong> ${data.trivia}</div>
+        </div>`;
+      }
+
+      return html;
+    }
+
+    function displayNutritionData(nutritionData, detectedFoods = [], portion = '') {
+      let html = '';
+      
+      if (Array.isArray(nutritionData)) {
+        // Multiple food items from image upload
+        nutritionData.forEach((item, index) => {
+          html += `<div class="food-item-container">`;
+          html += displaySingleFoodData(
+            item.details, 
+            item.health_warnings || '', 
+            item.food || detectedFoods[index] || '', 
+            portion,
+            index
+          );
+          html += `</div>`;
+        });
+      } else {
+        // Single food item from manual entry
+        html += `<div class="food-item-container">`;
+        html += displaySingleFoodData(nutritionData, '', '', portion, 0);
+        html += `</div>`;
+      }
+
+      const resultBox = document.getElementById("nutritionResult");
+      resultBox.innerHTML = html;
+      resultBox.style.display = 'block';
+    }
+
+    function showLoading() {
+      const resultBox = document.getElementById("nutritionResult");
+      resultBox.innerHTML = '<div class="loading">⟳ Processing your request...</div>';
+      resultBox.style.display = 'block';
+    }
+
+    function showError(message) {
+      const resultBox = document.getElementById("nutritionResult");
+      resultBox.innerHTML = `<div class="error">❌ Error: ${message}</div>`;
+      resultBox.style.display = 'block';
+    }
+
+    function toggleAlternatives(index = 0) {
+      const section = document.getElementById(`alternativesSection${index}`);
+      if (section) {
+        section.classList.toggle('hidden');
+      }
+    }
+
+    function toggleTrivia(index = 0) {
+      const section = document.getElementById(`triviaSection${index}`);
+      if (section) {
+        section.classList.toggle('hidden');
+      }
+    }
+
+    async function uploadImage() {
+      const file = document.getElementById("imageInput").files[0];
+      const portion = document.getElementById("portionSize").value;
+      
+      if (!file) {
+        alert("Please select an image!");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("portion_size", portion);
+
+      showLoading();
+
+      try {
+        const res = await fetch("/upload", {
+          method: "POST",
+          body: formData,
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        
+        const data = await res.json();
+
+        if (data.error) {
+          showError(data.error);
+          return;
+        }
+
+        if (data.nutrition && data.nutrition.length > 0) {
+          // Handle multiple detected foods
+          displayNutritionData(data.nutrition, data.detected, portion);
+        } else if (data.detected && data.detected.length === 0) {
+          showError("No food items detected in the image. Please try with a clearer image.");
+        } else {
+          showError("No nutrition data found");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        showError("An error occurred while processing the image. Please try again.");
+      }
+    }
+
+    async function getManualNutrition() {
+      const food = document.getElementById("manualFood").value.trim();
+      const portion = document.getElementById("manualPortion").value;
+
+      if (!food) {
+        alert("Please enter a food name!");
+        return;
+      }
+
+      showLoading();
+
+      try {
+        const res = await fetch("/get_nutrition", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ food_name: food, portion_size: portion }),
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        
+        const data = await res.json();
+
+        if (data.error) {
+          showError(data.error);
+          return;
+        }
+
+        if (data.nutrition && data.nutrition.length > 0) {
+          // Handle the response in the same format as image upload
+          displayNutritionData(data.nutrition, [food], portion);
+        } else {
+          showError("No nutrition data found for this food item");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        showError("An error occurred while fetching nutrition data. Please try again.");
+      }
+    }
+
+    // Add Enter key support for manual food input
+    document.getElementById("manualFood").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        getManualNutrition();
+      }
+    });
+  </script>
+
+</body>
+</html>

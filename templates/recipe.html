@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NutriLens - Recipe</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+
+</head>
+<body>
+  <nav>
+    <div class="logo-title">
+      <a href="/"><img src="/static/img/logo.png" alt="Logo" /></a>
+      <a href="/"><strong>NutriLens</strong></a>
+    </div>
+    <div>
+      <a href="/">About</a>
+      <a href="/">Login</a>
+      <button class="sign-in-btn" onclick="location.href='/'">Sign In</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Discover Delicious Recipes</h1>
+      <p>Get detailed recipes with ingredients, instructions, and nutritional insights for your favorite dishes</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">👨‍🍳 Recipe Generator</h2>
+
+  <div class="card">
+    <h5 class="card-title">Get Recipe for Your Food</h5>
+    <input type="text" id="recipeFood" placeholder="E.g., Pasta, Dosa, Sandwich, Pizza" />
+    <select id="portionSize">
+      <option value="1 person (50 - 150g)">1 person (50 - 150g)</option>
+      <option value="2 persons (150 - 300g)" selected>2 persons (150 - 300g)</option>
+      <option value="3+ persons (300 - 500g)">3+ persons (300 - 500g)</option>
+    </select>
+    <button class="btn-primary" onclick="getRecipe()">Get Recipe</button>
+  </div>
+
+  <div id="recipeResult" class="recipe-box"></div>
+
+  <div class="about-section">
+    <h2>About Us</h2>
+    <p>
+      NutriLens is an AI-driven health platform that combines food recognition, nutrition science, and personal wellness.
+      We aim to empower people with informed dietary choices through smart automation and user-friendly tools.
+    </p>
+    <br />
+    <a class="btn-about" href="/">Read More</a>
+  </div>
+
+  <footer>
+    Made with ❤️ by Team NutriLens
+  </footer>
+
+  <script>
+    let currentIngredients = [];
+
+    function parseRecipeResponse(recipeText) {
+      const lines = recipeText.split('\n');
+      const result = {
+        nutritionInfo: '',
+        verdict: '',
+        ingredients: [],
+        instructions: [],
+        tips: ''
+      };
+
+      let currentSection = '';
+
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (!line) continue;
+
+        const lowerLine = line.toLowerCase();
+
+        if (lowerLine.startsWith('nutrition:')) {
+          result.nutritionInfo = line.substring(line.indexOf(':') + 1).trim();
+          currentSection = 'nutrition';
+          continue;
+        }
+
+        if (lowerLine.startsWith('verdict:')) {
+          result.verdict = line.substring(line.indexOf(':') + 1).trim();
+          currentSection = 'verdict';
+          continue;
+        }
+
+        if (lowerLine === 'ingredients:' || lowerLine.startsWith('ingredients:')) {
+          currentSection = 'ingredients';
+          continue;
+        }
+
+        if (lowerLine === 'steps:' || lowerLine.startsWith('steps:') || 
+            lowerLine === 'instructions:' || lowerLine.startsWith('instructions:')) {
+          currentSection = 'instructions';
+          continue;
+        }
+
+        if (lowerLine.includes('tips:') || lowerLine.includes('tip:')) {
+          if (line.includes(':')) {
+            result.tips = line.split(':')[1]?.trim() || '';
+          }
+          currentSection = 'tips';
+          continue;
+        }
+
+        if (currentSection === 'nutrition') {
+          if (line.includes('|') || line.match(/\d+(\.\d+)?\s*(g|mg|calories|kcal)/i)) {
+            result.nutritionInfo += (result.nutritionInfo ? ' ' : '') + line;
+          } else if (!lowerLine.includes('verdict') && !lowerLine.includes('ingredients') && 
+                     !lowerLine.includes('steps') && !lowerLine.includes('instructions')) {
+            currentSection = '';
+          }
+        } 
+        else if (currentSection === 'verdict') {
+          if (!lowerLine.includes('ingredients') && !lowerLine.includes('steps') && 
+              !lowerLine.includes('instructions') && !lowerLine.includes('tips')) {
+            result.verdict += ' ' + line;
+          } else {
+            currentSection = '';
+            i--;
+          }
+        }
+        else if (currentSection === 'ingredients') {
+          if (line.match(/^[-•*]\s+/) || line.match(/^\d+[\.\)]\s+/)) {
+            // Only remove the bullet point or numbered list marker, keep everything else including quantities
+            let cleanedIngredient = '';
+            if (line.match(/^[-•*]\s+/)) {
+              cleanedIngredient = line.replace(/^[-•*]\s+/, '').trim();
+            } else if (line.match(/^\d+[\.\)]\s+/)) {
+              cleanedIngredient = line.replace(/^\d+[\.\)]\s+/, '').trim();
+            }
+            
+            if (cleanedIngredient && !cleanedIngredient.toLowerCase().includes('step')) {
+              result.ingredients.push(cleanedIngredient);
+            }
+          } else if (lowerLine.includes('steps') || lowerLine.includes('instructions')) {
+            currentSection = 'instructions';
+            i--;
+          }
+        }
+        else if (currentSection === 'instructions') {
+          if (line.match(/^[-•*]\s+/) || line.match(/^\d+[\.\)]\s+/)) {
+            // Only remove the bullet point or numbered list marker, keep everything else
+            let cleanedInstruction = '';
+            if (line.match(/^[-•*]\s+/)) {
+              cleanedInstruction = line.replace(/^[-•*]\s+/, '').trim();
+            } else if (line.match(/^\d+[\.\)]\s+/)) {
+              cleanedInstruction = line.replace(/^\d+[\.\)]\s+/, '').trim();
+            }
+            
+            if (cleanedInstruction) {
+              result.instructions.push(cleanedInstruction);
+            }
+          }
+        }
+        else if (currentSection === 'tips') {
+          if (!lowerLine.includes('ingredients') && !lowerLine.includes('steps') && 
+              !lowerLine.includes('instructions')) {
+            result.tips += ' ' + line;
+          }
+        }
+      }
+
+      result.nutritionInfo = result.nutritionInfo.trim();
+      result.verdict = result.verdict.trim();
+      result.tips = result.tips.trim();
+
+      return result;
+    }
+
+    function formatNutritionInfo(nutritionText) {
+      if (!nutritionText) return '';
+      
+      if (nutritionText.includes('|')) {
+        return nutritionText.replace(/\|/g, ' • ');
+      }
+      
+      return nutritionText;
+    }
+
+    function displayRecipeData(recipeText, foodName, portionSize) {
+      const data = parseRecipeResponse(recipeText);
+      currentIngredients = data.ingredients; // Store ingredients for cart functionality
+      
+      let html = '';
+      
+      if (foodName) {
+        html += `<div class="recipe-heading"><strong>🍽️ ${foodName} Recipe</strong></div>`;
+      }
+      
+      if (portionSize) {
+        html += `<div class="portion-heading"><strong>👥 Serving size: ${portionSize}</strong></div>`;
+      }
+
+      if (data.nutritionInfo) {
+        html += `<div class="nutrition-info">
+          <strong>📊 Nutritional Information:</strong><br>
+          ${formatNutritionInfo(data.nutritionInfo)}
+        </div>`;
+      }
+
+      if (data.verdict) {
+        html += `<div class="verdict-section">
+          <strong>🎯 Health Verdict:</strong> ${data.verdict}
+        </div>`;
+      }
+
+      if (data.ingredients.length > 0) {
+        html += `<div class="section-heading"><strong>🥕 Ingredients:</strong></div>`;
+        data.ingredients.forEach(ingredient => {
+          html += `<div class="ingredient-item">• ${ingredient}</div>`;
+        });
+
+        html += `<div class="button-container">
+          <button class="btn-cart" onclick="addToCart()">🛒 Add to Shopping Cart</button>
+          <button class="btn-secondary" onclick="openCart()">📋 Show Cart</button>
+        </div>`;
+      }
+
+      if (data.instructions.length > 0) {
+        html += `<div class="section-heading"><strong>📝 Instructions:</strong></div>`;
+        data.instructions.forEach((instruction, index) => {
+          html += `<div class="instruction-item"><strong>${index + 1}.</strong> ${instruction}</div>`;
+        });
+
+        html += `<div class="button-container">
+          <button class="btn-alternative" onclick="suggestAlternative('${foodName}')">🔄 Suggest Alternative Recipe</button>
+        </div>`;
+      }
+
+      if (data.tips) {
+        html += `<div class="section-heading"><strong>💡 Tips:</strong></div>`;
+        html += `<div class="ingredient-item">${data.tips}</div>`;
+      }
+
+      if (!data.ingredients.length && !data.instructions.length && !data.nutritionInfo && !data.verdict) {
+        html += `<div style="white-space: pre-line; background: #f8f9fa; padding: 1rem; border-radius: 8px; line-height: 1.6;">${recipeText}</div>`;
+      }
+
+      const resultBox = document.getElementById("recipeResult");
+      resultBox.innerHTML = html;
+      resultBox.style.display = 'block';
+    }
+
+    function showLoading() {
+      const resultBox = document.getElementById("recipeResult");
+      resultBox.innerHTML = '<div class="loading">🔄 Cooking up your recipe...</div>';
+      resultBox.style.display = 'block';
+    }
+
+    function showError(message) {
+      const resultBox = document.getElementById("recipeResult");
+      resultBox.innerHTML = `<div class="error">❌ Error: ${message}</div>`;
+      resultBox.style.display = 'block';
+    }
+
+    async function getRecipe() {
+      const food = document.getElementById("recipeFood").value.trim();
+      const portion = document.getElementById("portionSize").value;
+
+      if (!food) {
+        alert("Please enter a food name!");
+        return;
+      }
+
+      showLoading();
+
+      try {
+        const res = await fetch("/get_recipe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            food_name: food,
+            portion_size: portion 
+          }),
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        
+        const data = await res.json();
+
+        if (data.error) {
+          showError(data.error);
+          return;
+        }
+
+        if (data.recipe) {
+          displayRecipeData(data.recipe, food, portion);
+        } else {
+          showError("No recipe data found");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        showError("An error occurred while fetching the recipe. Please try again.");
+      }
+    }
+
+    async function addToCart() {
+      if (currentIngredients.length === 0) {
+        alert("No ingredients to add to cart!");
+        return;
+      }
+
+      try {
+        // Add each ingredient individually using the same endpoint as cart.html
+        let successCount = 0;
+        let failCount = 0;
+
+        for (const ingredient of currentIngredients) {
+          try {
+            const response = await fetch('/add_item_to_cart', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                item_name: ingredient.trim()
+              })
+            });
+
+            if (response.ok) {
+              successCount++;
+            } else {
+              failCount++;
+              console.error(`Failed to add ${ingredient}:`, await response.text());
+            }
+          } catch (error) {
+            failCount++;
+            console.error(`Error adding ${ingredient}:`, error);
+          }
+        }
+
+        if (successCount > 0) {
+          alert(`✅ ${successCount} ingredients added to cart!${failCount > 0 ? ` (${failCount} failed)` : ''}`);
+        } else {
+          alert(`❌ Failed to add ingredients to cart. Please try again.`);
+        }
+
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        alert("❌ Error adding to cart. Please try again.");
+      }
+    }
+
+    function openCart() {
+      window.open('/cart.html', '_blank');
+    }
+
+    async function suggestAlternative(originalFood) {
+      try {
+        showLoading();
+        
+        const res = await fetch("/suggest_alternative", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            original_food: originalFood 
+          }),
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          if (data.alternative_recipe) {
+            displayRecipeData(data.alternative_recipe, data.alternative_name || "Alternative Recipe", document.getElementById("portionSize").value);
+          } else {
+            showError("No alternative recipe found");
+          }
+        } else {
+          showError("Failed to get alternative recipe. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error getting alternative:", error);
+        showError("Error getting alternative recipe. Please try again.");
+      }
+    }
+
+    // Event listeners
+    document.getElementById("recipeFood").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        getRecipe();
+      }
+    });
+
+    document.getElementById("recipeFood").addEventListener("input", function(event) {
+      let value = event.target.value;
+      event.target.value = value.charAt(0).toUpperCase() + value.slice(1);
+    });
+  </script>
+
+</body>
+</html>

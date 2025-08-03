@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NutriLens - Ingredients Analysis</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 5px; 
+      margin-left: 0;
+    }
+    .logo-title img {
+      height: 40px;
+      margin-left: 0;
+      padding-left: 0;
+    }
+    .logo-title a {
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+      font-size: 1.5rem; 
+      line-height: 1;   
+    }
+    nav .logo-title a:hover {
+      color: green;
+    }
+    nav a {
+      margin-left: 1.2rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .sign-in-btn {
+      background-color: #555;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 1.2rem;
+    }
+    
+    .sign-in-btn:hover {
+      background-color: green;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin: 3rem 0 1.5rem;
+      color: #333;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      margin: 2rem auto;
+      padding: 2rem;
+      max-width: 700px;
+    }
+
+    .card-title {
+      font-size: 1.6rem;
+      color: #111;
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+      background: #333;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-primary:hover {
+      background: green;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: green;
+    }
+
+    select, input, textarea {
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .hero {
+      background: url('/static/img/banner.png') center/cover no-repeat;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      padding-left: 3rem;
+      color: #222;
+    }
+
+    .hero-content {
+      max-width: 600px;
+      padding: 1rem;
+      border-radius: 12px;
+    }
+
+    .hero-content h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+    }
+
+    .about-section {
+      background-color: #e9ecef;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .about-section p {
+      max-width: 700px;
+      margin: 1rem auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .btn-about {
+      margin-top: 1rem;
+      padding: 0.8rem 1.6rem;
+      font-size: 1rem;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-about:hover {
+      background-color: green;
+    }
+
+    footer {
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.9rem;
+    }
+
+    .analysis-box {
+      background-color: #fff;
+      color: #000;
+      border-radius: 12px;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1.5rem 2rem;
+      font-size: 1rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      line-height: 1.6;
+      display: none;
+    }
+
+    .section-heading {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin: 1.5rem 0 1rem 0;
+      color: #333;
+    }
+
+    .positives-section {
+      color: #28a745;
+    }
+
+    .negatives-section {
+      color: #dc3545;
+    }
+
+    .verdict-section {
+      color: #333;
+      font-weight: 600;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #007bff;
+    }
+
+    .alternatives-section {
+      color: #17a2b8;
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .ingredient-item {
+      margin: 0.8rem 0;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .ingredient-name {
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+
+    .ingredient-description {
+      margin-top: 0.3rem;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .rating-badge {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+    }
+
+    .rating-poor { background-color: #f8d7da; color: #721c24; }
+    .rating-bad { background-color: #f8d7da; color: #721c24; }
+    .rating-moderate { background-color: #fff3cd; color: #856404; }
+    .rating-healthy { background-color: #d4edda; color: #155724; }
+    .rating-extremely { background-color: #d1ecf1; color: #0c5460; }
+    .rating-avoid { background-color: #f5c6cb; color: #721c24; }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      border: 1px solid #f5c6cb;
+    }
+
+    .button-container {
+      text-align: center;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo-title">
+      <a href="/"><img src="/static/img/logo.png" alt="Logo" /></a>
+      <a href="/"><strong>NutriLens</strong></a>
+    </div>
+    <div>
+      <a href="/">About</a>
+      <a href="/">Login</a>
+      <button class="sign-in-btn" onclick="location.href='/'">Sign In</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Ingredient Safety Analysis</h1>
+      <p>Analyze food ingredients and get detailed health assessment for informed choices</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">🧪 Ingredients Analysis</h2>
+
+  <div class="card">
+    <h5 class="card-title">Analyze Food Ingredients</h5>
+    <textarea 
+      id="ingredientsList" 
+      placeholder="Enter ingredients separated by commas (e.g., whole wheat, sugar, food color, jaggery, liquid glucose)"
+      rows="4"
+    ></textarea>
+    
+    <select id="commodityType">
+      <option value="">Select Commodity Type</option>
+      <option value="beverage">Beverage</option>
+      <option value="snacks">Snacks</option>
+      <option value="confectionery">Confectionery</option>
+      <option value="condiments">Condiments</option>
+      <option value="dairy product">Dairy Product</option>
+      <option value="bakery product">Bakery Product</option>
+      <option value="instant food">Instant Food Product</option>
+      <option value="frozen product">Frozen Product</option>
+      <option value="alcoholic beverage">Alcoholic Beverage</option>
+      <option value="health supplement">Health & Nutritive Product</option>
+      <option value="breakfast cereal">Breakfast Cereal</option>
+    </select>
+    
+    <button class="btn-primary" onclick="analyzeIngredients()">Analyze Ingredients</button>
+  </div>
+
+  <div id="analysisResult" class="analysis-box"></div>
+
+  <div class="about-section">
+    <h2>About Us</h2>
+    <p>
+      NutriLens is an AI-driven health platform that combines food recognition, nutrition, and personal wellness.
+      We aim to empower people with informed dietary choices through smart automation and user-friendly tools.
+    </p>
+    <br />
+    <a class="btn-about" href="/">Learn More</a>
+  </div>
+
+  <footer>
+    Made with ❤️ by Team NutriLens
+  </footer>
+
+  <script>
+    function parseAnalysisText(analysisText) {
+      const sections = {
+        positives: [],
+        negatives: [],
+        verdict: '',
+        rating: '',
+        reason: '',
+        ingredientsToAvoid: '',
+        alternatives: []
+      };
+
+      const lines = analysisText.split('\n');
+      let currentSection = '';
+
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+
+        const upperLine = line.toUpperCase();
+        
+        // Check for section headers
+        if (upperLine.startsWith('POSITIVES:')) {
+          currentSection = 'positives';
+          continue;
+        } else if (upperLine.startsWith('NEGATIVES:')) {
+          currentSection = 'negatives';
+          continue;
+        } else if (upperLine.startsWith('VERDICT:')) {
+          currentSection = 'verdict';
+          continue;
+        } else if (upperLine.includes('BETTER ALTERNATIVE') || upperLine.includes('ALTERNATIVES:')) {
+          currentSection = 'alternatives';
+          continue;
+        }
+        
+        // Handle specific verdict fields
+        if (line.startsWith('Health Rating:')) {
+          sections.rating = line.replace('Health Rating:', '').trim();
+          continue;
+        } else if (line.startsWith('Reason:')) {
+          sections.reason = line.replace('Reason:', '').trim();
+          continue;
+        } else if (line.startsWith('Ingredients to Avoid:')) {
+          sections.ingredientsToAvoid = line.replace('Ingredients to Avoid:', '').trim();
+          continue;
+        }
+        
+        // Handle bullet points for all sections
+        if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+          const content = line.replace(/^[•\-*]\s*/, '').trim();
+          if (content) {
+            switch (currentSection) {
+              case 'positives':
+                sections.positives.push(content);
+                break;
+              case 'negatives':
+                sections.negatives.push(content);
+                break;
+              case 'alternatives':
+                sections.alternatives.push(content);
+                break;
+            }
+          }
+        }
+      }
+
+      // Debug log to check parsing
+      console.log('Parsed sections:', sections);
+      return sections;
+    }
+
+    function getRatingClass(rating) {
+      const ratingLower = rating.toLowerCase();
+      if (ratingLower.includes('poor')) return 'rating-poor';
+      if (ratingLower.includes('bad')) return 'rating-bad';
+      if (ratingLower.includes('avoid')) return 'rating-avoid';
+      if (ratingLower.includes('moderate')) return 'rating-moderate';
+      if (ratingLower.includes('extremely')) return 'rating-extremely';
+      if (ratingLower.includes('healthy')) return 'rating-healthy';
+      return 'rating-moderate';
+    }
+
+    function displayAnalysisData(analysisText, ingredients, commodityType) {
+      const data = parseAnalysisText(analysisText);
+      let html = '';
+
+      // Header
+      html += `<div style="text-align: center; margin-bottom: 2rem;">
+        <h3 style="color: #333; margin-bottom: 0.5rem;">📋 Analysis Report</h3>
+        <p style="color: #666; margin: 0;"><strong>Product Type:</strong> ${commodityType.charAt(0).toUpperCase() + commodityType.slice(1)}</p>
+      </div>`;
+
+      // Positives section
+      if (data.positives.length > 0) {
+        html += `<div class="section-heading positives-section">✅ POSITIVES</div>`;
+        data.positives.forEach(item => {
+          const parts = item.split(':');
+          const ingredient = parts[0] ? parts[0].trim() : '';
+          const description = parts.length > 1 ? parts.slice(1).join(':').trim() : '';
+          
+          html += `<div class="ingredient-item">
+            <div class="ingredient-name" style="color: #28a745;">• ${ingredient}</div>
+            ${description ? `<div class="ingredient-description">${description}</div>` : ''}
+          </div>`;
+        });
+      }
+
+      // Negatives section
+      if (data.negatives.length > 0) {
+        html += `<div class="section-heading negatives-section">❌ NEGATIVES</div>`;
+        data.negatives.forEach(item => {
+          const parts = item.split(':');
+          const ingredient = parts[0] ? parts[0].trim() : '';
+          const description = parts.length > 1 ? parts.slice(1).join(':').trim() : '';
+          
+          html += `<div class="ingredient-item">
+            <div class="ingredient-name" style="color: #dc3545;">• ${ingredient}</div>
+            ${description ? `<div class="ingredient-description">${description}</div>` : ''}
+          </div>`;
+        });
+      }
+
+      // Verdict section
+      if (data.rating || data.reason) {
+        html += `<div class="verdict-section">
+          <div class="section-heading">🎯 VERDICT</div>`;
+        
+        if (data.rating) {
+          const ratingClass = getRatingClass(data.rating);
+          html += `<div style="margin-bottom: 1rem;">
+            <span class="rating-badge ${ratingClass}">${data.rating.toUpperCase()}</span>
+          </div>`;
+        }
+        
+        if (data.reason) {
+          html += `<div style="margin-bottom: 1rem;"><strong>Assessment:</strong> ${data.reason}</div>`;
+        }
+        
+        if (data.ingredientsToAvoid) {
+          html += `<div><strong>Ingredients to Avoid:</strong> ${data.ingredientsToAvoid}</div>`;
+        }
+        
+        html += `</div>`;
+      }
+
+      // Better alternatives section - always create it even if hidden
+      if (data.alternatives.length > 0) {
+        html += `<div class="button-container">
+          <button class="btn-secondary" onclick="toggleAlternatives()">🔄 Better Alternative</button>
+        </div>`;
+
+        html += `<div id="alternativesSection" class="alternatives-section" style="display: none;">
+          <div class="section-heading">🔄 BETTER ALTERNATIVE INGREDIENTS</div>`;
+        
+        data.alternatives.forEach(item => {
+          const parts = item.split(':');
+          const ingredient = parts[0] ? parts[0].trim() : '';
+          const description = parts.length > 1 ? parts.slice(1).join(':').trim() : '';
+          
+          html += `<div class="ingredient-item">
+            <div class="ingredient-name" style="color: #17a2b8;">• ${ingredient}</div>
+            ${description ? `<div class="ingredient-description">${description}</div>` : ''}
+          </div>`;
+        });
+        
+        html += `</div>`;
+      } else {
+        // Debug: Show if no alternatives found
+        console.log('No alternatives found in parsed data');
+      }
+
+      const resultBox = document.getElementById("analysisResult");
+      resultBox.innerHTML = html;
+      resultBox.style.display = 'block';
+    }
+
+    function showLoading() {
+      const resultBox = document.getElementById("analysisResult");
+      resultBox.innerHTML = '<div class="loading">🔄 Analyzing ingredients...</div>';
+      resultBox.style.display = 'block';
+    }
+
+    function showError(message) {
+      const resultBox = document.getElementById("analysisResult");
+      resultBox.innerHTML = `<div class="error">❌ Error: ${message}</div>`;
+      resultBox.style.display = 'block';
+    }
+
+    function toggleAlternatives() {
+      const section = document.getElementById('alternativesSection');
+      if (section) {
+        if (section.style.display === 'none') {
+          section.style.display = 'block';
+        } else {
+          section.style.display = 'none';
+        }
+        console.log('Toggled alternatives section, current display:', section.style.display);
+      } else {
+        console.log('Alternatives section not found');
+      }
+    }
+
+    async function analyzeIngredients() {
+      const ingredients = document.getElementById("ingredientsList").value.trim();
+      const commodityType = document.getElementById("commodityType").value;
+
+      if (!ingredients) {
+        alert("Please enter the ingredients list!");
+        return;
+      }
+
+      if (!commodityType) {
+        alert("Please select a commodity type!");
+        return;
+      }
+
+      showLoading();
+
+      try {
+        const res = await fetch("/analyze_ingredients", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            ingredients: ingredients, 
+            commodity_type: commodityType 
+          }),
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+        
+        const data = await res.json();
+
+        if (data.error) {
+          showError(data.error);
+          return;
+        }
+
+        if (data.success && data.analysis) {
+          // Debug: Log the raw analysis text
+          console.log('Raw analysis text:', data.analysis);
+          displayAnalysisData(data.analysis, ingredients, commodityType);
+        } else {
+          showError("No analysis data received");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        showError("An error occurred while analyzing ingredients. Please try again.");
+      }
+    }
+
+    // Add Enter key support for ingredients input (Ctrl+Enter since it's textarea)
+    document.getElementById("ingredientsList").addEventListener("keydown", function(event) {
+      if (event.ctrlKey && event.key === "Enter") {
+        analyzeIngredients();
+      }
+    });
+  </script>
+
+</body>
+</html>

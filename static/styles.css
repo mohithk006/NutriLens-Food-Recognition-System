@@ -1,0 +1,737 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+/* ========================================
+   NAVIGATION STYLES
+   ======================================== */
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 5px; 
+  margin-left: 0;
+}
+
+.logo-title img {
+  height: 40px;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.logo-title a {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  font-size: 1.5rem; 
+  line-height: 1;   
+}
+
+nav .logo-title a:hover {
+  color: green;
+}
+
+nav a {
+  margin-left: 1.2rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.sign-in-btn {
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 1.2rem;
+}
+
+.sign-in-btn:hover {
+  background-color: green;
+}
+
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
+.hero {
+  background: url('/static/img/banner.png') center/cover no-repeat;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  padding-left: 3rem;
+  color: #222;
+}
+
+.hero-content {
+  max-width: 600px;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.hero-content h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+}
+
+/* ========================================
+   SECTION TITLES & HEADINGS
+   ======================================== */
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 3rem 0 1.5rem;
+  color: #333;
+}
+
+.section-heading {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 1.5rem 0 1rem 0;
+  color: #333;
+}
+
+.diet-plan-page .section-heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 2rem 0 1.5rem 0;
+  border-bottom: 3px solid #28a745;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-title {
+  font-size: 1.6rem;
+  color: #111;
+  margin-bottom: 1rem;
+}
+
+/* Food item headings */
+.food-heading,
+.recipe-heading {
+  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+  color: #006400;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.portion-heading {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #2f4f4f;
+}
+
+/* ========================================
+   ABOUT SECTION
+   ======================================== */
+
+.about-section {
+  background-color: #e9ecef;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.about-section p {
+  max-width: 700px;
+  margin: 1rem auto;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+footer {
+  background-color: #222;
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+}
+
+/* ========================================
+   BUTTONS - UNIFIED STYLES
+   ======================================== */
+
+/* Base button styles */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-about,
+.btn-cart,
+.btn-alternative {
+  background: #333;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 0.5rem;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Button hover states */
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-about:hover,
+.btn-cart:hover,
+.btn-alternative:hover {
+  background: green;
+}
+
+/* Button variations */
+.btn-primary {
+  border-radius: 10px;
+}
+
+.btn-about {
+  margin-top: 1rem;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+}
+
+.btn-secondary {
+  background: #6c757d;
+}
+
+.btn-remove {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-remove:hover {
+  background: #c82333;
+}
+
+/* Diet plan page button overrides */
+.diet-plan-page .btn-primary {
+  padding: 0.8rem 1.5rem;
+  width: 100%;
+  margin-top: 2rem;
+  font-size: 1rem;
+}
+
+/* ========================================
+   CARDS & CONTENT BOXES
+   ======================================== */
+
+/* Base card styles */
+.card,
+.cart-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 700px;
+}
+
+.cart-container {
+  max-width: 800px;
+}
+
+.diet-plan-page .card {
+  padding: 2.5rem;
+  max-width: 800px;
+}
+
+/* Content display boxes */
+.analysis-box,
+.recipe-box,
+.nutrition-box,
+.diet-plan-box {
+  background-color: #fff;
+  color: #000;
+  border-radius: 12px;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  line-height: 1.6;
+  display: none;
+}
+
+.diet-plan-box {
+  border-radius: 15px;
+  max-width: 900px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ========================================
+   FORM ELEMENTS
+   ======================================== */
+
+select, 
+input, 
+textarea {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-family: inherit;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Diet plan page input styling */
+.input-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-end;
+}
+
+.input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+
+.input-group input,
+.input-group select {
+  padding: 0.8rem;
+  border: 2px solid #e9ecef;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+  height: 3.2rem;
+  margin-bottom: 0;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: #28a745;
+}
+
+/* Specific input styles */
+.item-name-input {
+  font-weight: bold;
+  font-size: 1rem;
+  width: 100%;
+  padding: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  margin: 0;
+}
+
+.quantity-input {
+  width: 80px;
+  padding: 0.3rem;
+  text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0;
+}
+
+/* ========================================
+   SHOPPING CART STYLES
+   ======================================== */
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  background: #f9f9f9;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+}
+
+.item-info {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.item-name {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.item-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-item-section {
+  background: #e9ecef;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.cart-summary {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* ========================================
+   INGREDIENT & NUTRITION STYLES
+   ======================================== */
+
+.ingredient-item {
+  margin: 0.8rem 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ingredient-name {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.ingredient-description {
+  margin-top: 0.3rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.nutrient-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.3rem 0;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.nutrient-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.nutrient-value {
+  color: #B8860B;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.food-item-container {
+  margin-bottom: 3rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 2rem;
+}
+
+.food-item-container:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+/* ========================================
+   RATING BADGES
+   ======================================== */
+
+.rating-badge {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.rating-poor,
+.rating-bad { 
+  background-color: #f8d7da; 
+  color: #721c24; 
+}
+
+.rating-moderate { 
+  background-color: #fff3cd; 
+  color: #856404; 
+}
+
+.rating-healthy { 
+  background-color: #d4edda; 
+  color: #155724; 
+}
+
+.rating-extremely { 
+  background-color: #d1ecf1; 
+  color: #0c5460; 
+}
+
+.rating-avoid { 
+  background-color: #f5c6cb; 
+  color: #721c24; 
+}
+
+/* ========================================
+   COLORED SECTIONS
+   ======================================== */
+
+.positives-section,
+.benefits-section {
+  color: #28a745;
+}
+
+.negatives-section,
+.disadvantages-section {
+  color: #dc3545;
+}
+
+.verdict-section {
+  color: #333;
+  font-weight: 600;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.alternatives-section {
+  color: #17a2b8;
+  display: none;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.trivia-section {
+  color: #6c757d;
+  font-style: italic;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* ========================================
+   SPECIAL SECTIONS
+   ======================================== */
+
+.nutrition-info {
+  background-color: #f8f9fa;
+  border-left: 4px solid #17a2b8;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+.health-warnings {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  color: #856404;
+}
+
+.health-warnings .warning-title {
+  font-weight: bold;
+  color: #d63031;
+  margin-bottom: 0.5rem;
+}
+
+/* Diet plan specific styles */
+.diet-plan-box .profile-info {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 1rem 0 2rem 0;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 5px solid #28a745;
+}
+
+.diet-plan-box h2 {
+  color: #28a745;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.diet-plan-box h3 {
+  color: #2980b9 !important;
+  margin: 1.5rem 0 1rem 0;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: 0.5rem;
+}
+
+.diet-plan-box h4 {
+  color: #e67e22;
+  margin: 1rem 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.diet-plan-box ul {
+  margin: 0.5rem 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.diet-plan-box li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  padding-left: 1.2rem;
+  position: relative;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.diet-plan-box li:before {
+  content: "•";
+  color: #28a745;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.diet-plan-box strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.diet-plan-box p {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.loading,
+.empty-cart {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.empty-cart {
+  font-size: 1.1rem;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border: 1px solid #f5c6cb;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.button-container {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.message {
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  display: none;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.list-item {
+  margin: 0.3rem 0;
+  padding-left: 1rem;
+}
+
+.instruction-item {
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  line-height: 1.5;
+}
+
+/* ========================================
+   RESPONSIVE STYLES
+   ======================================== */
+
+@media (max-width: 768px) {
+  .input-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .hero {
+    padding-left: 1rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .card,
+  .diet-plan-page .card {
+    padding: 1.5rem;
+  }
+}
