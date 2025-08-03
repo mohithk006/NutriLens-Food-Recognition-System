@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NutriLens - Shopping Cart</title>
-  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
   <nav>
     <div class="logo-title">
-      <a href="/"><img src="/static/img/logo.png" alt="Logo" /></a>
+      <a href="/"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" /></a>
       <a href="/"><strong>NutriLens</strong></a>
     </div>
     <div>
