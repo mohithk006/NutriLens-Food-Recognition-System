@@ -6,16 +6,16 @@ import google.generativeai as genai
 
 # Initialize Flask app
 app = Flask(__name__, static_folder="static")
-api_key = os.getenv("GEMINI_API_KEY")
-if not api_key:
-    raise RuntimeError("GEMINI_API_KEY environment variable not set")
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "nutrilens_secret_key_2025")
 app.config['PERMANENT_SESSION_LIFETIME'] = 86400  # 24 hours
 
 # Initialize models
 model = YOLO("yolov8n_custom.pt")
 
 # Configure Gemini API
-api_key = os.getenv("GEMINI_API_KEY", "AIzaSyA5betX_MgRE8b4Ba0QghQeZBuaa2n1kPg")
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise RuntimeError("GEMINI_API_KEY environment variable not set")
 genai.configure(api_key=api_key)
 gemini_model = genai.GenerativeModel("gemini-2.0-flash")
 
