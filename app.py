@@ -6,7 +6,9 @@ import google.generativeai as genai
 
 # Initialize Flask app
 app = Flask(__name__, static_folder="static")
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "nutrilens_secret_key_2025")
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise RuntimeError("GEMINI_API_KEY environment variable not set")
 app.config['PERMANENT_SESSION_LIFETIME'] = 86400  # 24 hours
 
 # Initialize models
@@ -631,3 +633,4 @@ def clear_cart():
 
 if __name__ == "__main__":
     app.run()
+
