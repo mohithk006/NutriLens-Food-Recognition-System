@@ -29,7 +29,7 @@ Detect. Analyze. Eat Smart. NutriLens is an end-to-end web application that leve
 
 ---
 
-## 🌟 Introduction
+## Introduction
 
 In a world with countless dietary choices, making informed decisions about nutrition can be overwhelming. NutriLens was built to solve this problem by acting as a personal AI nutritionist in your pocket. It combines state-of-the-art object detection with advanced generative AI to deliver a seamless and intuitive user experience.
 
@@ -37,7 +37,7 @@ This project is not just a concept; it's a fully functional, end-to-end deployed
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 NutriLens is packed with features designed to empower users on their health journey:
 
@@ -50,7 +50,7 @@ NutriLens is packed with features designed to empower users on their health jour
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 This project integrates a variety of modern technologies to deliver a robust and feature-rich experience.
 
@@ -64,7 +64,7 @@ This project integrates a variety of modern technologies to deliver a robust and
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -119,7 +119,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ---
 
-## 📖 User Guide
+## User Guide
 
 Navigating NutriLens is simple and intuitive.
 
@@ -143,7 +143,7 @@ Navigating NutriLens is simple and intuitive.
 
 ---
 
-## 📈 Project Analysis
+## Project Analysis
 
 ### Pros
 
@@ -161,6 +161,12 @@ Navigating NutriLens is simple and intuitive.
 
 ---
 
-## 🤝 Contributors
+## Contributors
 
 This project was developed as part of our College academic curriculum by a dedicated team of students. It represents our collective effort to apply our software development and machine learning skills to build a real-world, impactful application.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
