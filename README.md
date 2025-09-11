@@ -1,4 +1,4 @@
-# NutriLens: Your AI-Powered Food Intelligence Assistant
+# NutriLens: An AI-Powered Food Intelligence Assistant
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Flask](https://img.shields.io/badge/Flask-2.x-black.svg)](https://flask.palletsprojects.com/)
