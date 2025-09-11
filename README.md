@@ -60,7 +60,7 @@ This project integrates a variety of modern technologies to deliver a robust and
 | **AI / ML** | `Google Gemini API` (for generative content), `YOLOv8 (Ultralytics)`, `PyTorch`, `OpenCV` |
 | **Frontend** | `HTML5`, `CSS3`, `Vanilla JavaScript`                                                                  |
 | **Data/Session** | `Flask Session` (for Shopping Cart)                                                                    |
-| **Deployment** | `Gunicorn` (as specified in `requirements.txt`)                                                 |
+| **Deployment** | `Gunicorn`                                                 |
 
 ---
 
