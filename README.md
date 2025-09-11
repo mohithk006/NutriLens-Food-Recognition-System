@@ -10,7 +10,7 @@ Detect. Analyze. Eat Smart. NutriLens is an end-to-end web application that leve
 
 
 
----
+
 
 ## 📋 Table of Contents
 
@@ -27,7 +27,7 @@ Detect. Analyze. Eat Smart. NutriLens is an end-to-end web application that leve
 - [🤝 Contributors](#-contributors)
 - [📜 License](#-license)
 
----
+
 
 ## Introduction
 
@@ -35,7 +35,7 @@ In a world with countless dietary choices, making informed decisions about nutri
 
 This project is not just a concept; it's a fully functional, end-to-end deployed application that showcases a deep understanding of frontend development, backend architecture, API integration, and machine learning model implementation. The core of the application is a **custom-trained YOLOv8 model** designed to recognize a wide variety of food items, with a special focus on Indian cuisine.
 
----
+
 
 ## Key Features
 
@@ -48,7 +48,7 @@ NutriLens is packed with features designed to empower users on their health jour
 -   **🍲 Recipe Generation & Alternatives**: Discover new recipes by simply entering the name of a dish. For any given recipe, you can also request a healthier, alternative version with just one click.
 -   **🛒 Automated Shopping Cart**: Automatically add all ingredients from a generated recipe to a dynamic shopping list. You can also manually add, edit, and remove items, and copy the entire list to your clipboard.
 
----
+
 
 ## Tech Stack
 
@@ -62,7 +62,7 @@ This project integrates a variety of modern technologies to deliver a robust and
 | **Data/Session** | `Flask Session` (for Shopping Cart)                                                                    |
 | **Deployment** | `Gunicorn`                                                 |
 
----
+
 
 ## Getting Started
 
@@ -117,7 +117,7 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```
     The application will be running at `http://127.0.0.1:5000`. Open this URL in your web browser.
 
----
+
 
 ## User Guide
 
@@ -141,7 +141,7 @@ Navigating NutriLens is simple and intuitive.
     -   On the "Shopping Cart" page, you can manually add items, edit quantities, and remove items.
     -   Use the "Copy Items" button to copy your shopping list for easy use.
 
----
+
 
 ## Project Analysis
 
@@ -159,13 +159,13 @@ Navigating NutriLens is simple and intuitive.
 -   **Static Frontend**: The frontend is built with vanilla JavaScript. Migrating to a modern framework like React or Vue.js could create a more dynamic, responsive, and stateful user interface.
 -   **Batch Image Processing**: Currently, images are processed one by one. Future versions could allow users to upload multiple images at once for batch analysis.
 
----
+
 
 ## Contributors
 
 This project was developed as part of our College academic curriculum by a dedicated team of students. It represents our collective effort to apply our software development and machine learning skills to build a real-world, impactful application.
 
----
+
 
 ## License
 
