@@ -8,7 +8,7 @@
 
 Detect. Analyze. Eat Smart. NutriLens is an end-to-end web application that leverages the power of Artificial Intelligence to provide instantaneous food recognition, detailed nutritional analysis, and personalized dietary guidance. Simply upload a picture of your meal, and let NutriLens do the rest!
 
-*A live demo GIF of the application in action would be a great addition here!*
+
 
 ---
 
