@@ -163,7 +163,7 @@ Navigating NutriLens is simple and intuitive.
 
 ## Contributors
 
-This project was developed as part of our College academic curriculum by a dedicated team of students. It represents our collective effort to apply our software development and machine learning skills to build a real-world, impactful application.
+This project was developed as part of our College academic curriculum by me and my team. It represents our collective effort to apply our software development and machine learning skills to build a real-world, impactful application.
 
 
 
