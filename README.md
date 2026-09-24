@@ -166,7 +166,3 @@ Navigating NutriLens is simple and intuitive.
 This project was developed as part of our College academic curriculum by me and my team. It represents our collective effort to apply our software development and machine learning skills to build a real-world, impactful application.
 
 
-
-## License
-
-This project is licensed under the MIT License.
